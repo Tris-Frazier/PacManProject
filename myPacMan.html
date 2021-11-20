@@ -1,0 +1,58 @@
+<html>
+<SCRIPT>
+    //pos is used to set the position of the x coordinate
+    var pos = 0;
+
+    //pacArray stores the images that will be used to create the open/closed mouth in both directions
+    const pacArray = [
+        ['PacMan1.png', 'PacMan2.png'],
+        ['PacMan3.png', 'PacMan4.png']
+    ];
+
+    /*direction has two uses:
+      controls movement: 0 = left to right.  1 = right to left
+      controls which image is used: it's value is the first index when selecting from the pacArray
+    */
+    var direction = 0;
+
+    //focus controls which image is used
+    var focus = 0;
+
+    function Run() {
+        let img = document.getElementById("PacMan");
+        let imgWidth = img.width;
+        focus = (focus + 1) % 2;
+        direction = checkPageBounds(direction, imgWidth);
+        img.src = pacArray[direction][focus];
+        //reminder for new programmers: coersion allows for 0 to equal false and 1 to equal true
+        if (direction) {
+            pos -= 20;
+            img.style.left = pos + "px";
+        } else {
+            pos += 20;
+            img.style.left = pos + 'px';
+        }
+    }
+
+    /*this function checks to see if the x position is at the edge of screen 
+      and changes the value of direction once it does **see comment at direction variable
+    */  
+    function checkPageBounds(direction, imgWidth) {
+        if(pos > (window.innerWidth - imgWidth)){
+            direction = 1;
+        } else if(pos < 0){
+            direction = 0;
+        }
+        return direction;
+    }
+    /*The assignment was to call setTimout().  This fucntion only runs once so I used setInterval()
+      to run continuosly.
+    */  
+    setInterval(Run, 200);
+</SCRIPT>
+
+<body>
+    <img id="PacMan" src="PacMan1.png" width="200" onclick="Run()" style="position:absolute"> </img>
+</body>
+
+</html>
